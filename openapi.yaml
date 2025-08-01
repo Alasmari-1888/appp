@@ -1,0 +1,38 @@
+
+openapi: 3.1.0
+info:
+  title: Price API
+  version: "1.0.0"
+servers:
+  - url: https://YOUR_PUBLIC_URL
+paths:
+  /search:
+    get:
+      summary: Search products
+      parameters:
+        - in: query
+          name: q
+          schema:
+            type: string
+          required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  query: { type: string }
+                  results:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id: { type: string }
+                        title: { type: string }
+                        merchant: { type: string }
+                        price: { type: number }
+                        currency: { type: string }
+                        shipping: { type: string }
+                        delivery_time: { type: string }
