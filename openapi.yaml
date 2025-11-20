@@ -9,30 +9,55 @@ paths:
   /search:
     get:
       summary: Search products
+      description: Return products whose title or merchant matches the query (case-insensitive).
       parameters:
         - in: query
           name: q
           schema:
             type: string
           required: true
+          description: Search term used to match product title or merchant.
       responses:
         "200":
           description: OK
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  query: { type: string }
-                  results:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        id: { type: string }
-                        title: { type: string }
-                        merchant: { type: string }
-                        price: { type: number }
-                        currency: { type: string }
-                        shipping: { type: string }
-                        delivery_time: { type: string }
+                $ref: '#/components/schemas/SearchResponse'
+components:
+  schemas:
+    Product:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Stable identifier for the item
+        title:
+          type: string
+          description: Product title as shown by the merchant
+        merchant:
+          type: string
+          description: Seller or marketplace name
+        price:
+          type: number
+          description: Price in the provided currency
+        currency:
+          type: string
+          description: ISO currency code for the price
+        shipping:
+          type: string
+          description: Shipping cost or label
+        delivery_time:
+          type: string
+          description: Estimated delivery window
+      required: [id, title, merchant, price, currency, shipping, delivery_time]
+    SearchResponse:
+      type: object
+      properties:
+        query:
+          type: string
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Product'
+      required: [query, results]
